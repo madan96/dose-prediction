@@ -32,9 +32,10 @@ antires_block3 = model.block_layer(antires_block2, 256, 4, 2, True, "antires_blo
 antires_block3 = antires_block3 + ptv_block1 + oct_block1 # skip-connection 3
 antires_block4 = model.block_layer(antires_block3, 64, 3, 2, True, "antires_block4", data_format='channels_first', transpose=True)     
 antires_block4 = antires_block4 + ptv_conv2 + oct_conv2 # skip-connection 4
-antires_block5 = model.block_layer(antires_block4, 3, 1, 2, True, "antires_block5", data_format='channels_first', transpose=True)  
+antires_block5 = model.block_layer(antires_block4, 64, 1, 2, True, "antires_block5", data_format='channels_first', transpose=True)  
 antires_endconv = tf.layers.conv2d(antires_block5, filters=3, kernel_size=1, use_bias=False, name="final_conv", data_format='channels_first') 
 
+print (antires_endconv.shape)
 with tf.Session() as sess:
     writer = tf.summary.FileWriter("output", sess.graph)
     print(sess.run(antires_endconv))
